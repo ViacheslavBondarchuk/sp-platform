@@ -9,4 +9,22 @@
     <mvc:annotation-driven/>
     <context:annotation-config/>
 
+    <beans default-autowire="byType">
+        <!--Modelmapper-->
+        <bean id="modelMapper" class="org.modelmapper.ModelMapper" scope="singleton"/>
+
+        <bean id="commonConverter" class="hbv.com.ua.configuration.CommonConverter">
+            <property name="modelMapper" ref="modelMapper"/>
+        </bean>
+
+        <bean class="org.springframework.context.support.ConversionServiceFactoryBean">
+            <property name="converters">
+                <bean class="hbv.com.ua.configuration.CommonConverter"/>
+            </property>
+        </bean>
+
+
+    </beans>
+
+
 </beans>

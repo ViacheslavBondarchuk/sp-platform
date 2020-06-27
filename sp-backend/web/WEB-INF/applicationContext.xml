@@ -9,4 +9,11 @@
     <mvc:annotation-driven/>
     <context:annotation-config/>
 
+    <beans default-autowire="byType">
+        <!--Modelmapper-->
+        <bean id="modelMapper" class="org.modelmapper.ModelMapper" scope="singleton"/>
+
+    </beans>
+
+
 </beans>
