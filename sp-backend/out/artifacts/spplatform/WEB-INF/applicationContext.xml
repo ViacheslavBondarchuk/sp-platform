@@ -2,22 +2,35 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
 
-    <context:component-scan base-package="hbv.com.ua.*"/>
+    <context:component-scan base-package="hbv.com.ua"/>
     <mvc:annotation-driven/>
     <context:annotation-config/>
+    <aop:aspectj-autoproxy/>
 
-    <beans default-autowire="byType">
-        <!--Datasource-->
-        <!--        <bean id="datasource" class="org.apache.tomcat.dbcp.dbcp2.BasicDataSource">-->
-        <!--            <property name="defaultAutoCommit" value="false"/>-->
-        <!--            <property name="driverClassName" value=""/>-->
-        <!--            <property name="username" value="postgres"/>-->
-        <!--            <property name="password" value="postgres"/>-->
-        <!--        </bean>-->
-    </beans>
+    <!--aspect config-->
+    <aop:config>
+        <!--pointcuts-->
+        <aop:pointcut id="controllerLoggingServicePointCut" expression="execution(* hbv.com.ua.controller..*.*(..))"/>
+        <aop:pointcut id="loggingServicePointCut" expression="execution(* hbv.com.ua.service..*.*(..))"/>
+
+        <aop:aspect id="loggingService" ref="loggingService">
+            <aop:before method="before" pointcut-ref="loggingServicePointCut" arg-names="joinPoint"/>
+        </aop:aspect>
+
+        <aop:aspect id="controllerLoggingService" ref="loggingService">
+            <aop:before method="before" pointcut-ref="controllerLoggingServicePointCut" arg-names="joinPoint"/>
+            <aop:after method="after" pointcut-ref="controllerLoggingServicePointCut" arg-names="joinPoint"/>
+            <aop:after-returning method="afterReturn" pointcut-ref="controllerLoggingServicePointCut"
+                                 arg-names="joinPoint"/>
+            <aop:after-throwing method="afterThrowing" pointcut-ref="controllerLoggingServicePointCut"
+                                arg-names="joinPoint"/>
+        </aop:aspect>
+    </aop:config>
+
+    <bean id="loggingService" class="hbv.com.ua.aop.LoggingService" init-method="init" scope="singleton"/>
 
 
 </beans>

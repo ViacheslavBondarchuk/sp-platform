@@ -4,10 +4,6 @@ import org.aspectj.lang.JoinPoint;
 
 public class LoggingService {
 
-    public void init() {
-        System.out.println();
-    }
-
     public void before(final JoinPoint joinPoint) {
         System.out.println();
     }

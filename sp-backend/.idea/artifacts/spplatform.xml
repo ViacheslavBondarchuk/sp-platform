@@ -12,6 +12,7 @@
           <element id="library" level="project" name="lib" />
         </element>
       </element>
+      <element id="javaee-facet-resources" facet="sp-backend/web/Web" />
     </root>
   </artifact>
 </component>

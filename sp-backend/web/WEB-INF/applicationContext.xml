@@ -6,12 +6,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <context:component-scan base-package="hbv.com.ua"/>
-    <mvc:annotation-driven>
-        <mvc:message-converters>
-            <bean class="org.springframework.http.converter.StringHttpMessageConverter"/>
-            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
-        </mvc:message-converters>
-    </mvc:annotation-driven>
+    <mvc:annotation-driven/>
     <context:annotation-config/>
     <aop:aspectj-autoproxy/>
 
@@ -33,6 +28,7 @@
         </aop:aspect>
     </aop:config>
 
-    <bean id="loggingService" class="hbv.com.ua.aop.LoggingService" init-method="init" scope="singleton"/>
+    <bean id="loggingService" class="hbv.com.ua.aop.LoggingService" scope="singleton"/>
+
 
 </beans>
