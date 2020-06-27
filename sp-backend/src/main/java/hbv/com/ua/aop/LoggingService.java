@@ -1,22 +1,24 @@
 package hbv.com.ua.aop;
 
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 
+@Slf4j
 public class LoggingService {
 
     public void before(final JoinPoint joinPoint) {
-        System.out.println();
+        log.info("Before call: class: {} method: {}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
     }
 
     public void after(final JoinPoint joinPoint) {
-        System.out.println();
+        log.info("After call: class: {} method: {}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
     }
 
     public void afterReturn(final JoinPoint joinPoint) {
-        System.out.println();
+        log.info("After return call: class: {} method: {}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
     }
 
     public void afterThrowing(final JoinPoint joinPoint) {
-        System.out.println();
+        log.info("After throw call: class: {} method: {}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
     }
 }
