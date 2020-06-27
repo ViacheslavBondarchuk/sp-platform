@@ -1,8 +1,18 @@
 package hbv.com.ua.service;
 
-import org.springframework.stereotype.Service;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-@Service
-public class UserService {
 
+public class UserService implements UserDetailsService {
+
+    public void a(){
+
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        return null;
+    }
 }

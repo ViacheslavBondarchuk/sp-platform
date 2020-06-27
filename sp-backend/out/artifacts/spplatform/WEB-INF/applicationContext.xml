@@ -5,25 +5,18 @@
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <context:component-scan base-package="hbv.com.ua"/>
+    <context:component-scan base-package="hbv.com.ua.*"/>
     <mvc:annotation-driven/>
     <context:annotation-config/>
 
     <beans default-autowire="byType">
-        <!--Modelmapper-->
-        <bean id="modelMapper" class="org.modelmapper.ModelMapper" scope="singleton"/>
-
-        <bean id="commonConverter" class="hbv.com.ua.configuration.CommonConverter">
-            <property name="modelMapper" ref="modelMapper"/>
-        </bean>
-
-        <bean class="org.springframework.context.support.ConversionServiceFactoryBean">
-            <property name="converters">
-                <bean class="hbv.com.ua.configuration.CommonConverter"/>
-            </property>
-        </bean>
-
-
+        <!--Datasource-->
+        <!--        <bean id="datasource" class="org.apache.tomcat.dbcp.dbcp2.BasicDataSource">-->
+        <!--            <property name="defaultAutoCommit" value="false"/>-->
+        <!--            <property name="driverClassName" value=""/>-->
+        <!--            <property name="username" value="postgres"/>-->
+        <!--            <property name="password" value="postgres"/>-->
+        <!--        </bean>-->
     </beans>
 
 

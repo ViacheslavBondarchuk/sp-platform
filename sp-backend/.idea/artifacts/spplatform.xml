@@ -2,10 +2,10 @@
   <artifact type="exploded-war" name="spplatform">
     <output-path>$PROJECT_DIR$/out/artifacts/spplatform</output-path>
     <root id="root">
-      <element id="javaee-facet-resources" facet="sp-backend/web/Web" />
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="sp-backend" />
+          <element id="javaee-facet-classes" facet="sp-backend/web/Web" />
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="lib1" />
