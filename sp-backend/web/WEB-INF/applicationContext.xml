@@ -16,6 +16,7 @@
         <aop:pointcut id="controllerLoggingServicePointCut" expression="execution(* hbv.com.ua.controller..*.*(..))"/>
         <aop:pointcut id="loggingServicePointCut" expression="execution(* hbv.com.ua.service..*.*(..))"/>
 
+        <!--aspects-->
         <aop:aspect id="loggingService" ref="loggingService">
             <aop:before method="before" pointcut-ref="loggingServicePointCut" arg-names="joinPoint"/>
         </aop:aspect>
