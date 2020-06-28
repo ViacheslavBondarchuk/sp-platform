@@ -30,6 +30,7 @@
     </aop:config>
 
     <bean id="loggingService" class="hbv.com.ua.aop.LoggingService" scope="singleton"/>
+    <bean id="propertiesUtil" class="hbv.com.ua.util.PropertiesUtil" factory-method="getInstance" init-method="init" scope="singleton"/>
 
 
 </beans>
