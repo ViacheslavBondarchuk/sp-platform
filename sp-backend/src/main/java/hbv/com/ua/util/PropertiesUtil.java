@@ -1,12 +1,9 @@
 package hbv.com.ua.util;
 
-import lombok.extern.slf4j.Slf4j;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-@Slf4j
 public final class PropertiesUtil {
     private static PropertiesUtil instance;
     private Properties properties;
