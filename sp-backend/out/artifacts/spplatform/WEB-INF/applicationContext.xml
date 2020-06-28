@@ -34,6 +34,15 @@
         </aop:aspect>
     </aop:config>
 
+    <!--datasource-->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" scope="singleton">
+        <property name="username" value="postgres"/>
+        <property name="password" value="postgres"/>
+        <property name="schema" value="sp"/>
+        <property name="driverClassName" value="org.postgresql.Driver "/>
+        <property name="url" value="jdbc:postgresql://localhost:5432/sp_platform"/>
+    </bean>
+
     <bean id="loggingService" class="hbv.com.ua.aop.LoggingService" scope="singleton"/>
     <bean id="propertiesUtil" class="hbv.com.ua.util.PropertiesUtil" factory-method="getInstance" init-method="init" scope="singleton"/>
 
