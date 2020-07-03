@@ -3,7 +3,8 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
+       xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd">
 
     <context:component-scan base-package="hbv.com.ua"/>
     <mvc:annotation-driven>
@@ -15,36 +16,43 @@
     <context:annotation-config/>
     <aop:aspectj-autoproxy/>
 
+    <mybatis:scan base-package="hbv.com.ua.repository.mybatis"/>
+
     <!--aspect config-->
     <aop:config>
         <!--pointcuts-->
-        <aop:pointcut id="controllerLoggingServicePointCut" expression="execution(* hbv.com.ua.controller..*.*(..))"/>
         <aop:pointcut id="loggingServicePointCut" expression="execution(* hbv.com.ua.service..*.*(..))"/>
 
         <!--aspects-->
         <aop:aspect id="loggingService" ref="loggingService">
             <aop:before method="before" pointcut-ref="loggingServicePointCut" arg-names="joinPoint"/>
-        </aop:aspect>
-
-        <aop:aspect id="controllerLoggingService" ref="loggingService">
-            <aop:before method="before" pointcut-ref="controllerLoggingServicePointCut" arg-names="joinPoint"/>
-            <aop:after method="after" pointcut-ref="controllerLoggingServicePointCut" arg-names="joinPoint"/>
-            <aop:after-returning method="afterReturn" pointcut-ref="controllerLoggingServicePointCut" arg-names="joinPoint"/>
-            <aop:after-throwing method="afterThrowing" pointcut-ref="controllerLoggingServicePointCut" arg-names="joinPoint"/>
+            <aop:after method="after" pointcut-ref="loggingServicePointCut" arg-names="joinPoint"/>
+            <aop:after-returning method="afterReturn" pointcut-ref="loggingServicePointCut" arg-names="joinPoint"/>
+            <aop:after-throwing method="afterThrowing" pointcut-ref="loggingServicePointCut" arg-names="joinPoint"/>
         </aop:aspect>
     </aop:config>
 
     <!--datasource-->
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" scope="singleton">
+    <bean id="dataSource" class="org.apache.ibatis.datasource.pooled.PooledDataSource" scope="singleton">
         <property name="username" value="postgres"/>
         <property name="password" value="postgres"/>
-        <property name="schema" value="sp"/>
-        <property name="driverClassName" value="org.postgresql.Driver "/>
-        <property name="url" value="jdbc:postgresql://localhost:5432/sp_platform"/>
+        <property name="defaultAutoCommit" value="false"/>
+        <property name="driver" value="org.postgresql.Driver"/>
+        <property name="url" value="jdbc:postgresql://localhost/sp"/>
     </bean>
 
-    <bean id="loggingService" class="hbv.com.ua.aop.LoggingService" scope="singleton"/>
-    <bean id="propertiesUtil" class="hbv.com.ua.util.PropertiesUtil" factory-method="getInstance" init-method="init" scope="singleton"/>
+
+    <!--sqlSessionFactoryBean-->
+    <bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean" scope="singleton">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:sql-config.xml"/>
+        <property name="mapperLocations" value="classpath:mappers/*.xml"/>
+    </bean>
+
+    <!--loggingService-->
+    <bean id="loggingService" class="hbv.com.ua.aop.LoggingServiceAspect" scope="singleton"/>
+    <!--applicationPropertiesUtil-->
+    <bean id="applicationPropertiesUtil" class="hbv.com.ua.util.ApplicationPropertiesUtil" factory-method="getInstance" init-method="init" scope="singleton"/>
 
 
 </beans>

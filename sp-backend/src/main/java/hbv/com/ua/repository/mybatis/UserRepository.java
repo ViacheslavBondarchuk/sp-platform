@@ -1,16 +1,9 @@
 package hbv.com.ua.repository.mybatis;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import hbv.com.ua.model.User;
 
-import javax.sql.DataSource;
+import java.util.Optional;
 
-@Component
-public class UserRepository {
-    private DataSource dataSource;
-
-    @Autowired
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
+public interface UserRepository {
+    Optional<User> findById(final long id);
 }

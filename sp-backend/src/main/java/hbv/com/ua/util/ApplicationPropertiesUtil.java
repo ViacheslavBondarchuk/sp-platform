@@ -4,18 +4,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public final class PropertiesUtil {
-    private static PropertiesUtil instance;
+public final class ApplicationPropertiesUtil {
+    private static ApplicationPropertiesUtil instance;
     private Properties properties;
 
     private final String PROPERTIES_NAME = "application.properties";
 
-    private PropertiesUtil() {
+    private ApplicationPropertiesUtil() {
     }
 
-    public static PropertiesUtil getInstance() {
+    public static ApplicationPropertiesUtil getInstance() {
         if (instance == null) {
-            instance = new PropertiesUtil();
+            instance = new ApplicationPropertiesUtil();
         }
         return instance;
     }

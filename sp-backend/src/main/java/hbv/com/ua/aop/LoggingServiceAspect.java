@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 
 @Slf4j
-public class LoggingService {
+public class LoggingServiceAspect {
 
     public void before(final JoinPoint joinPoint) {
         log.info("Before call: class: {} method: {}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
