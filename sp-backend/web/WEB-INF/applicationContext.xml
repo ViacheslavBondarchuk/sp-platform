@@ -49,9 +49,22 @@
         <property name="mapperLocations" value="classpath:mappers/*.xml"/>
     </bean>
 
+    <!--flyway configuration-->
+    <bean id="classicConfiguration" class="org.flywaydb.core.api.configuration.ClassicConfiguration">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="baselineOnMigrate" value="true"/>
+        <property name="encoding" value="UTF-8"/>
+    </bean>
+
+    <!--flyway-->
+    <bean id="flyway" class="org.flywaydb.core.Flyway" init-method="migrate" scope="singleton">
+        <constructor-arg name="configuration" ref="classicConfiguration"/>
+    </bean>
+
     <!--loggingService-->
     <bean id="loggingService" class="hbv.com.ua.aop.LoggingServiceAspect" scope="singleton"/>
     <!--applicationPropertiesUtil-->
-    <bean id="applicationPropertiesUtil" class="hbv.com.ua.util.ApplicationPropertiesUtil" factory-method="getInstance" init-method="init" scope="singleton"/>
-    
+    <bean id="applicationPropertiesUtil" class="hbv.com.ua.util.ApplicationPropertiesUtil" factory-method="getInstance"
+          init-method="init" scope="singleton"/>
+
 </beans>

@@ -1,11 +1,3 @@
-PGPASSWORD=postgres psql -U postgres <<EOF
-  drop database sp;
-  create database sp owner postgres;
-  \q
-EOF
-
-PGPASSWORD=postgres psql -U postgres -d sp <<EOF
-
 create table if not exists users
 (
     id                         bigserial    not null unique,
@@ -29,5 +21,3 @@ create table if not exists authorities
     primary key (id),
     foreign key (user_id) references users(id)
 );
-
-EOF

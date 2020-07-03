@@ -4,7 +4,15 @@
 
 <mapper namespace="hbv.com.ua.repository.mybatis.UserRepository">
 
+    <insert id="create" parameterType="hbv.com.ua.model.User">
+        insert into users values (id,username,password, first_name, last_name, phone)
+    </insert>
+
     <select id="findById" parameterType="java.lang.Long">
         select * from users where id = #{id}
+    </select>
+
+    <select id="findByUsername" parameterType="java.lang.String">
+        select * from users where username = #{username}
     </select>
 </mapper>

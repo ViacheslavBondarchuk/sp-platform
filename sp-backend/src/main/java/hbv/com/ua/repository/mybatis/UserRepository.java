@@ -4,6 +4,7 @@ import hbv.com.ua.model.User;
 
 import java.util.Optional;
 
-public interface UserRepository {
-    Optional<User> findById(final long id);
+public interface UserRepository extends CRUD<User, Long> {
+
+    Optional<User> findByUsername(final String username);
 }
