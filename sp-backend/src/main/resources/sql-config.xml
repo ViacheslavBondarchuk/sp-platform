@@ -17,9 +17,4 @@
 
         </environment>
     </environments>
-
-    <mappers>
-        <mapper class="hbv.com.ua.repository.mybatis.UserRepository"/>
-    </mappers>
-
 </configuration>

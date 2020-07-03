@@ -62,9 +62,8 @@
     </bean>
 
     <!--loggingService-->
-    <bean id="loggingService" class="hbv.com.ua.aop.LoggingServiceAspect" scope="singleton"/>
+    <bean id="loggingService" class="hbv.com.ua.aop.service.LoggingServiceAspect" scope="singleton"/>
     <!--applicationPropertiesUtil-->
-    <bean id="applicationPropertiesUtil" class="hbv.com.ua.util.ApplicationPropertiesUtil" factory-method="getInstance"
-          init-method="init" scope="singleton"/>
+    <bean id="applicationPropertiesUtil" class="hbv.com.ua.util.ApplicationPropertiesUtil" factory-method="getInstance" init-method="init" scope="singleton"/>
 
 </beans>

@@ -1,4 +1,4 @@
-package hbv.com.ua.aop;
+package hbv.com.ua.aop.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
