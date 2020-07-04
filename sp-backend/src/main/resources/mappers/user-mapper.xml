@@ -1,18 +1,21 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
-
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="hbv.com.ua.repository.mybatis.UserRepository">
-
     <insert id="create" parameterType="hbv.com.ua.model.User">
-        insert into users values (id,username,password, first_name, last_name, phone)
+        insert into users (username, password, first_name, last_name, phone) values (#{username},#{password}, #{first_name}, #{last_name}, #{phone});
+        
+        <foreach collection="set" index="index" item="authority">
+            insert into authorities (user_id, name) values (#{id}, #{authority.name})
+        </foreach>
     </insert>
 
-    <select id="findById" parameterType="java.lang.Long">
+    <select id="read" parameterType="java.lang.Long">
         select * from users where id = #{id}
     </select>
 
     <select id="findByUsername" parameterType="java.lang.String">
         select * from users where username = #{username}
     </select>
+
 </mapper>

@@ -3,6 +3,7 @@ package hbv.com.ua.service.impl;
 import hbv.com.ua.model.User;
 import hbv.com.ua.repository.mybatis.UserRepository;
 import hbv.com.ua.service.AbstractService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,6 +15,7 @@ public class UserServiceImpl extends AbstractService<User, Long, UserRepository>
     public UserServiceImpl(UserRepository repository) {
         super(repository);
     }
+
 
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
         return repository.findByUsername(username)

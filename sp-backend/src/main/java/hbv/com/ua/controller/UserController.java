@@ -1,12 +1,11 @@
 package hbv.com.ua.controller;
 
 import hbv.com.ua.model.User;
-import hbv.com.ua.repository.mybatis.UserRepository;
+import hbv.com.ua.service.impl.UserServiceImpl;
+import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.core.annotation.Order;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,16 +13,21 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
-    private UserRepository userRepository;
+    private UserServiceImpl userService;
 
     @Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public void setUserService(UserServiceImpl userService) {
+        this.userService = userService;
+    }
+
+    @PostMapping
+    public User create(@RequestBody User user) {
+        return userService.create(user);
     }
 
     @GetMapping("/{id}")
-    public User read(@PathVariable long id) {
-        return new User();
+    public User read(@PathVariable long id) throws NotFoundException {
+        return userService.read(id);
     }
 
     @GetMapping

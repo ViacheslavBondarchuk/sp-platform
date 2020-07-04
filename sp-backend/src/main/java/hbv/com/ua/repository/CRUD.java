@@ -1,9 +1,9 @@
-package hbv.com.ua.repository.mybatis;
+package hbv.com.ua.repository;
 
 import java.util.Optional;
 
 public interface CRUD<T, ID> {
-    Optional<T> findById(final ID id);
+    Optional<T> read(final ID id);
 
     T create(final T t);
 
