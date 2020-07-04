@@ -4,6 +4,10 @@
 <configuration>
     <properties resource="application.properties"/>
 
+    <typeHandlers>
+        <typeHandler handler="hbv.com.ua.configuration.mybatis.handler.AuthorityEnumTypeHandler"/>
+    </typeHandlers>
+
     <environments default="development">
         <environment id="development">
             <transactionManager type="MANAGED"/>

@@ -1,11 +1,14 @@
 package hbv.com.ua.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CRUD<T, ID> {
     Optional<T> read(final ID id);
 
-    T create(final T t);
+    List<T> readAll();
+
+    void create(final T t);
 
     T update(final T t, ID id);
 

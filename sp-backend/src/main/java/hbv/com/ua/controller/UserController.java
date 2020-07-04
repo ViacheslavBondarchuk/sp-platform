@@ -4,7 +4,6 @@ import hbv.com.ua.model.User;
 import hbv.com.ua.service.impl.UserServiceImpl;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -21,8 +20,8 @@ public class UserController {
     }
 
     @PostMapping
-    public User create(@RequestBody User user) {
-        return userService.create(user);
+    public void create(@RequestBody User user) {
+        userService.create(user);
     }
 
     @GetMapping("/{id}")
@@ -32,7 +31,7 @@ public class UserController {
 
     @GetMapping
     public List<User> readAll() {
-        return Arrays.asList(new User());
+        return userService.readAll();
     }
 
 }

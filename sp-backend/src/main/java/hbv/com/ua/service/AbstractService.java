@@ -3,6 +3,8 @@ package hbv.com.ua.service;
 import hbv.com.ua.repository.CRUD;
 import org.apache.ibatis.javassist.NotFoundException;
 
+import java.util.List;
+
 public abstract class AbstractService<T, ID, R extends CRUD<T, ID>> {
     protected final R repository;
 
@@ -15,8 +17,12 @@ public abstract class AbstractService<T, ID, R extends CRUD<T, ID>> {
                 .orElseThrow(() -> new NotFoundException("entity has been not found"));
     }
 
-    public T create(final T t) {
-        return repository.create(t);
+    public List<T> readAll() {
+        return repository.readAll();
+    }
+
+    public void create(final T t) {
+        repository.create(t);
     }
 
     public T update(final T t, ID id) {
