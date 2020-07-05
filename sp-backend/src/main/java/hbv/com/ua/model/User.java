@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Set;
+import java.util.Collection;
 
 @Data
 @Builder
@@ -20,7 +20,7 @@ public class User implements UserDetails {
     private String lastName;
     private String phone;
 
-    private Set<Authority> authorities;
+    private Collection<Authority> authorities;
     private boolean isEnabled;
     private boolean isAccountNonLocked;
     private boolean isAccountNonExpired;

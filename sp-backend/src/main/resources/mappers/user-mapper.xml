@@ -3,14 +3,15 @@
 
 <mapper namespace="hbv.com.ua.repository.mybatis.UserRepository">
 
-
-    <resultMap id="usersList" type="hbv.com.ua.model.User">
+    <resultMap id="userMap" type="hbv.com.ua.model.User">
         <id column="id" property="id"/>
         <result property="username" column="username"/>
         <result property="password" column="password"/>
         <result property="firstName" column="first_name"/>
         <result property="lastName" column="last_name"/>
         <result property="phone" column="phone"/>
+        <result property="authorities" column="authorities" javaType="java.util.Set"
+                jdbcType="ARRAY" typeHandler="hbv.com.ua.configuration.mybatis.type.handler.AuthorityArrayTypeHandler"/>
         <result property="isEnabled" column="is_enabled"/>
         <result property="isAccountNonLocked" column="is_account_non_locked"/>
         <result property="isAccountNonExpired" column="is_account_non_expired"/>
@@ -18,24 +19,30 @@
     </resultMap>
 
     <insert id="create" parameterType="hbv.com.ua.model.User" statementType="PREPARED">
-        insert into users (username, password, first_name, last_name, phone,is_enabled, is_account_non_locked, is_account_non_expired,is_credentials_non_expired)
-            values (#{username},#{password}, #{firstName}, #{lastName}, #{phone}, #{isEnabled}, #{isAccountNonLocked}, #{isAccountNonExpired}, #{isCredentialsNonExpired});
+        <selectKey order="BEFORE" keyColumn="id" keyProperty="id" resultType="java.lang.Long">
+            select nextval('users_id_seq ');
+        </selectKey>
+
+        insert into users (id,username, password, first_name, last_name, phone,is_enabled, is_account_non_locked, is_account_non_expired,is_credentials_non_expired)
+            values (#{id},#{username},#{password}, #{firstName}, #{lastName}, #{phone}, #{isEnabled}, #{isAccountNonLocked}, #{isAccountNonExpired}, #{isCredentialsNonExpired});
+
+        <foreach collection="authorities" item="authority" index="index">
+            insert into authorities (user_id, name) values (#{id}, #{authority.name});
+        </foreach>
     </insert>
 
-    <select id="read" parameterType="java.lang.Long" statementType="PREPARED">
-        select *
-        from users
-        where id = #{id}
+    <select id="read" parameterType="java.lang.Long" statementType="PREPARED" resultMap="userMap">
+        select  usr.*, array_agg(name order by usr.id) as authorities
+            from users as usr join authorities as auth on auth.user_id = usr.id where usr.id = #{id} group by  usr.id, auth.user_id;
     </select>
 
-    <select id="readAll" statementType="PREPARED" resultMap="usersList" resultType="java.util.List">
-        select * from users;
+    <select id="readAll" statementType="PREPARED" resultMap="userMap" resultType="java.util.List" resultOrdered="true">
+        select  usr.*, array_agg(name order by usr.id) as authorities
+            from users as usr join authorities as auth on auth.user_id = usr.id group by  usr.id, auth.user_id;
     </select>
 
     <select id="findByUsername" parameterType="java.lang.String" statementType="PREPARED">
-        select *
-        from users
-        where username = #{username}
+        select * from users where username = #{username}
     </select>
 
 </mapper>

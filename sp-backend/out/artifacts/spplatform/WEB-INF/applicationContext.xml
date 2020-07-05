@@ -6,6 +6,8 @@
        xmlns:mybatis="http://mybatis.org/schema/mybatis-spring" xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
+    <import resource="security-context.xml"/>
+
     <context:component-scan base-package="hbv.com.ua"/>
     <mvc:annotation-driven>
         <mvc:message-converters>
@@ -15,15 +17,13 @@
     </mvc:annotation-driven>
     <context:annotation-config/>
     <aop:aspectj-autoproxy/>
-    <tx:jta-transaction-manager/>
     <tx:annotation-driven/>
     <mybatis:scan base-package="hbv.com.ua.repository.mybatis" factory-ref="sqlSessionFactoryBean"/>
 
     <!--aspect config-->
     <aop:config proxy-target-class="true" expose-proxy="true">
         <!--pointcuts-->
-        <aop:pointcut id="loggingServicePointCut" expression="execution(* hbv.com.ua.service.impl..*.*(..))"/>
-
+        <aop:pointcut id="loggingServicePointCut" expression="execution(* hbv.com.ua.service..*.*(..))"/>
         <!--aspects-->
         <aop:aspect id="loggingService" ref="loggingService">
             <aop:before method="before" pointcut-ref="loggingServicePointCut" arg-names="joinPoint"/>
@@ -40,7 +40,6 @@
         <property name="driver" value="org.postgresql.Driver"/>
         <property name="url" value="jdbc:postgresql://localhost/sp"/>
     </bean>
-
 
     <!--sqlSessionFactoryBean-->
     <bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean" scope="singleton">
@@ -71,7 +70,7 @@
 
     <!--loggingService-->
     <bean id="loggingService" class="hbv.com.ua.aop.service.LoggingServiceAspect" scope="singleton"/>
+
     <!--applicationPropertiesUtil-->
     <bean id="applicationPropertiesUtil" class="hbv.com.ua.util.ApplicationPropertiesUtil" factory-method="getInstance" init-method="init" scope="singleton"/>
-
 </beans>

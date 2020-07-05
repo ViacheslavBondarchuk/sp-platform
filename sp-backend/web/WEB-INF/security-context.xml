@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:http="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/security https://www.springframework.org/schema/security/spring-security.xsd">
+
+    <http:http auto-config="true" use-expressions="true" create-session="stateless"/>
+
+    <!--authentication-manager>-->
+    <http:authentication-manager>
+        <http:authentication-provider user-service-ref="userServiceImpl">
+            <http:password-encoder ref="bCryptPasswordEncoder"/>
+        </http:authentication-provider>
+    </http:authentication-manager>
+
+    <!--delegatingFilterProxy-->
+    <bean id="delegatingFilterProxy" class="org.springframework.web.filter.DelegatingFilterProxy"/>
+
+    <!--bCryptPasswordEncoder   -->
+    <bean id="bCryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+
+</beans>
+
