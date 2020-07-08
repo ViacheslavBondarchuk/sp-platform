@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:mybatis="http://mybatis.org/schema/mybatis-spring" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <context:component-scan base-package="hbv.com.ua"/>
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter"/>
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+    <context:annotation-config/>
+    <aop:aspectj-autoproxy/>
+    <tx:annotation-driven/>
+    <mybatis:scan base-package="hbv.com.ua.repository.mybatis" factory-ref="sqlSessionFactoryBean"/>
+
+    <!--aspect config-->
+    <aop:config proxy-target-class="true" expose-proxy="true">
+        <!--pointcuts-->
+        <aop:pointcut id="loggingServicePointCut" expression="execution(* hbv.com.ua.service..*.*(..))"/>
+        <!--aspects-->
+        <aop:aspect id="loggingService" ref="loggingService">
+            <aop:before method="before" pointcut-ref="loggingServicePointCut" arg-names="joinPoint"/>
+            <aop:after method="after" pointcut-ref="loggingServicePointCut" arg-names="joinPoint"/>
+            <aop:after-returning method="afterReturn" pointcut-ref="loggingServicePointCut" arg-names="joinPoint"/>
+            <aop:after-throwing method="afterThrowing" pointcut-ref="loggingServicePointCut" arg-names="joinPoint"/>
+        </aop:aspect>
+    </aop:config>
+
+    <!--datasource-->
+    <bean id="dataSource" class="org.apache.ibatis.datasource.pooled.PooledDataSource" scope="singleton">
+        <property name="username" value="postgres"/>
+        <property name="password" value="postgres"/>
+        <property name="driver" value="org.postgresql.Driver"/>
+        <property name="url" value="jdbc:postgresql://localhost/sp"/>
+    </bean>
+
+    <!--sqlSessionFactoryBean-->
+    <bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean" scope="singleton">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="transactionFactory">
+            <bean class="org.apache.ibatis.transaction.managed.ManagedTransactionFactory"/>
+        </property>
+        <property name="configLocation" value="classpath:sql-config.xml"/>
+        <property name="mapperLocations" value="classpath:mappers/user-mapper.xml"/>
+    </bean>
+
+    <!--transaction manager-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" scope="singleton">
+        <constructor-arg name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!--flyway configuration-->
+    <bean id="classicConfiguration" class="org.flywaydb.core.api.configuration.ClassicConfiguration">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="baselineOnMigrate" value="true"/>
+        <property name="encoding" value="UTF-8"/>
+    </bean>
+
+    <!--flyway-->
+    <bean id="flyway" class="org.flywaydb.core.Flyway" init-method="migrate" scope="singleton">
+        <constructor-arg name="configuration" ref="classicConfiguration"/>
+    </bean>
+
+    <!--loggingService-->
+    <bean id="loggingService" class="hbv.com.ua.aop.service.LoggingServiceAspect" scope="singleton"/>
+
+    <!--applicationPropertiesUtil-->
+    <bean id="applicationPropertiesUtil" class="hbv.com.ua.util.ApplicationPropertiesUtil" factory-method="getInstance" init-method="init" scope="singleton"/>
+</beans>

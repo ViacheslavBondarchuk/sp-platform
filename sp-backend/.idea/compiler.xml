@@ -4,6 +4,15 @@
     <option name="BUILD_PROCESS_HEAP_SIZE" value="2048" />
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="sp-backend" />
+      </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel target="11">
+      <module name="sp-backend" target="1.5" />
+    </bytecodeTargetLevel>
   </component>
 </project>
